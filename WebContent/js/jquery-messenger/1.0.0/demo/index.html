@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>jQuery Messenger demo</title>
+
+    <script type="text/javascript" src="../lib/jquery-1.11.1.js"></script>
+
+
+    <link rel="stylesheet" href="../style/jquery-messenger.css">
+
+    <script type="text/javascript" src="../jquery-messenger.js"></script>
+    <script type="text/javascript" src="../lang/zh-CN.js"></script>
+
+    <style type="text/css">
+        body{
+            font-size: 14px;
+            line-height: 28px;
+            text-align: center;
+            font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, 'Hiragino Sans GB', 'Hiragino Sans GB W3', 'Microsoft YaHei UI', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+        }
+    </style>
+</head>
+<body>
+<h1 class="c-text-center">jQuery Messenger demo</h1>
+<br/><br/><br/><br/><br/><br/><br/>
+<!--//////////////////////////////////////////////////////////-->
+<div class="list-action">
+    <strong>Change Messenger Mode</strong><br/>
+    <!--<button onclick="initMgr()">init messenger...</button>-->
+    <button onclick="single(false)">Init a Single Message Mode</button>
+    <button onclick="single(true)">Init Multi-Message Mode</button>
+    <!--<button onclick="initPopup()">init popup messenger...</button>-->
+    <br/>
+    <br/>
+    <label><strong>Change Messenger Width:</strong>
+    <input name="width" id="width" type="text" value="600"></label>
+    <button onclick="width()">Set Width</button>
+    <br/>
+    <br/>
+    <strong>Create a Message</strong><br/>
+    <button onclick="message()">Common information</button>
+    <button onclick="error()">Error Message</button>
+    <button onclick="warning()">Warning Message</button>
+    <button onclick="success()">Success Message</button>
+    <button onclick="error_fixed()">Error and fixed Message without Auto-hide.</button>
+    <button onclick="t_nested()">Create Message to #msg element.</button>
+    <div id="msg" style="border: 1px solid #ddd;padding: 10px;width: 70%; margin: 0 auto;"></div>
+    <br/>
+    <br/>
+        <strong>Layout</strong><br/>
+    <button onclick="layout('top-left')">top-left</button>
+    <button onclick="layout('top-center')">top-center</button>
+    <button onclick="layout('top-right')">top-right</button>
+    <button onclick="layout('bottom-left')">bottom-left</button>
+    <button onclick="layout('bottom-center')">bottom-center</button>
+    <button onclick="layout('bottom-right')">bottom-right</button>
+
+    <br/><br/>
+            <strong>Auto Testing used to show 'Desktop Message', when you hide the browser or change switch browser tabs.</strong><br/>
+    <button onclick="startAuto()">Auto Start Testing</button>
+    <button onclick="stopAuto()">Stop Auto Testing</button>
+    <br/>
+    <!--Show / Hide Mgr:-->
+    <!--<button onclick="showMgr()">show Mgr</button>-->
+    <!--<button onclick="hideMgr()">Hide Mgr</button>-->
+
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Messenger.setting({
+            autoUpload: false
+        });
+    });
+
+    <!---->
+    function showMgr() {
+        Messenger.show();
+    }
+    function hideMgr() {
+        Messenger.close();
+    }
+
+    <!---->
+    function initMgr() {
+        Messenger.openMgr();
+    }
+
+
+    <!---->
+    function message() {
+        Messenger.info('普通信息显示在这里，Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...Common Message shows here...');
+    }
+    function error() {
+        Messenger.error('错误信息显示在这里，Error Message shows here...<a target="_blank" href="http://baidu.com/">baidu</a> ');
+    }
+    function error_fixed() {
+        var btn = $('<button>click me to resolve the problem!</button>');
+        btn.click(function () {
+            alert('Done!');
+        });
+        Messenger.error(btn, {
+            timeout: -1,
+            onClosed: function (msgType, message, event){
+                alert('Message was closed!');
+            }
+        });
+    }
+    function warning() {
+        Messenger.warning('警告信息显示在这里，Warning Message shows here...');
+    }
+    function success() {
+        Messenger.success('成功信息显示在这里，Success Message shows here...');
+    }
+
+    function t_nested(){
+        var txt = '注意：Subversion使用DeltaV来进行通信，但是Subversion客户端并不是一个通用的DeltaV客户端。实际上，Subversion客户端依赖于服务器的一些专有特性。更进一步来说，Subversion服务器端也不是一个通用的DeltaV服务器。它只是实现了DeltaV协议的一个子集。当且仅当只使用Subversion服务器端实现的这个子集的功能时，WebDAV或者DeltaV客户端才能正常的与Subversion服务器端协作<a href="debug.html">Link</a>';
+        var txt2 = '信息显示在这里，Common Message shows here...';
+
+        Messenger.info(txt, {target:'#msg', timeout:-1, messageIcon: false});
+        Messenger.success(txt2, {target:'#msg', timeout:4e3});
+        Messenger.error(txt, {target:'#msg', timeout:-1, closable: false});
+        Messenger.warning(txt2, {target:'#msg', timeout:0});
+    }
+
+    <!---->
+    function width(){
+        Messenger.setWidth($('#width').val());
+    }
+    <!---->
+    function layout(l) {
+        Messenger.setting({
+            closable: true,
+            sliderBar: true,
+            timeout: 4000,
+            layout: l,
+            target: 'body'
+        });
+    }
+
+    function single(mode) {
+        Messenger.setting({
+            multiple: mode
+        });
+    }
+
+    function startAuto(){
+        t1 = window.setInterval(function(){
+            message();
+        }, Math.random()* 100000);
+
+        t2 = window.setInterval(function(){
+            success();
+        }, Math.random()* 4000);
+
+        t3 = window.setInterval(function(){
+            warning();
+        }, Math.random()* 100000);
+
+        t4 = window.setInterval(function(){
+            error();
+        }, Math.random()* 700000);
+    }
+
+    function stopAuto(){
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+        clearTimeout(t4);
+    }
+
+
+    //    $(window).blur(function(){
+    //        console.log('window.blur');
+    //    });
+    //    $(window).focus(function(){
+    //        console.log('window.focus');
+    //    });
+</script>
+
+</body>
+</html>
