@@ -14,8 +14,10 @@ public class PropertiesUtil {
     public static String GetValueByKey(String key) {
         Properties pps = new Properties();
         try {
-            //InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFilePath);  
-        	InputStream in = PropertiesUtil.class.getClass().getResourceAsStream(propertyFilePath);  
+        	// 部署tomcat获取方式
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(propertyFilePath);
+            // 本地执行main方法获取方式
+//        	InputStream in = PropertiesUtil.class.getClass().getResourceAsStream(propertyFilePath);  
             assertNotNull("加载数据库配置文件错误。", in);
             pps.load(in);
             return pps.getProperty(key);
