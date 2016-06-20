@@ -122,11 +122,11 @@ public class Tests {
 
 		SVNLogService slog = new SVNLogService();
 		Tests syn = new Tests();
-		String url = "https://10.7.86.68/svn/JAYZT/";
-        String username = "hanx";
-        String password = "hanx";
+		String url = "https://10.7.86.68/svn/JAYZT/4 Implement/WEBBRANCH/2117";
+        String username = "chendq";
+        String password = "chendq";
 		System.out.println("=======================================");
-		syn.sync(username, password, url, 0, -1);
+		syn.sync(username, password, url, 0, 5);
 		// 保存数据
 	}
 	

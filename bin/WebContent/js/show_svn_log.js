@@ -70,16 +70,16 @@ function supage(divId, funName, params, curPage, total, totalPage, pageSize) {
     }  
     console.log("totalPage = " + totalPage);
     //设置起始页码  
-    if (totalPage > 25) {  
-        if ((curPage - 25) > 0 && curPage < totalPage - 25) {  
+    if (totalPage > 5) {  
+        if ((curPage - 5) > 0 && curPage < totalPage - 5) {  
             var start = curPage;  
-            var end = curPage + 25; 
-        }  else if (curPage >= (totalPage - 25)) {  
-            var start = totalPage - 25;  
+            var end = curPage + 5; 
+        }  else if (curPage >= (totalPage - 5)) {  
+            var start = totalPage - 5;  
             var end = totalPage;  
         }  else {  
             var start = 1;  
-            var end = 25;  
+            var end = 5;  
         }  
     } else {  
         var start = 1;  

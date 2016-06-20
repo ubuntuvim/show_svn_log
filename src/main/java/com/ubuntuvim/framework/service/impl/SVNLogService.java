@@ -101,23 +101,28 @@ public class SVNLogService implements ServiceInterface<SvnLog> {
 			throw new Exception("新增的数据为空。");
 		}
 		
-		String sql = "insert into svn_log(changeFilePath, revision, author, logMsg, changeDate, opType) " +
-				" values ";
-		String tmpSql = "";
+		String sql = "";
 		List<Object> params = new ArrayList<Object>();
 		for (SvnLog s : list) {
-			tmpSql += "(?, ?, ?, ?, ?, ?), ";
+			sql = "insert into svn_log(changeFilePath, revision, author, logMsg, changeDate, opType) " +
+					" values(?, ?, ?, ?, ?, ?)";
+			
 			params.add(s.getChangeFilePath());
 			params.add(s.getRevision());
 			params.add(s.getAuthor());
 			params.add(s.getLogMsg());
 			params.add(s.getChangeDate());
 			params.add(s.getOpType());
+			
+			//数据太多，无法一次性插入，一条条插入
+			jdbcUtils.updateByPreparedStatement(sql, params);
+			params.clear();
 		}
 		// 去掉最后一个逗号和空格
-		tmpSql = tmpSql.substring(0, tmpSql.length()-2);
-		sql += tmpSql;
-		return jdbcUtils.updateByPreparedStatement(sql, params);
+//		tmpSql = tmpSql.substring(0, tmpSql.length()-2);
+//		sql += tmpSql;
+//		return jdbcUtils.updateByPreparedStatement(sql, params);
+		return true;
 	}
 
 	/**
